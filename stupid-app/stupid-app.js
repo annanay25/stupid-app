@@ -1,7 +1,7 @@
 Meteor.methods({
   callClarifai: function () {
         this.unblock();
-        var response = Meteor.http.call("GET", "https://api.clarifai.com/v1/tag/?url=http://www.clarifai.com/img/metro-north.jpg",
+        var response = Meteor.http.call("GET", "https://api.clarifai.com/v1/tag/?url=https://s3.amazonaws.com/rapgenius/1367448157_Papi.jpg",
         {headers: {Authorization: "Bearer jftVrJ6hG1v26OVFVKM5wNB9hyt2pL"}});
         // console.log("LOL");
         var m = JSON.parse(response.content);
