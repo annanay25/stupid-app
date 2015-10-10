@@ -1,25 +1,29 @@
 Meteor.methods({
   callClarifai: function () {
         this.unblock();
-        response = Meteor.http.call("GET", "https://api.clarifai.com/v1/tag/?url=http://www.clarifai.com/img/metro-north.jpg",
+        var response = Meteor.http.call("GET", "https://api.clarifai.com/v1/tag/?url=http://www.clarifai.com/img/metro-north.jpg",
         {headers: {Authorization: "Bearer jftVrJ6hG1v26OVFVKM5wNB9hyt2pL"}});
-        console.log("LOL");
+        // console.log("LOL");
+        var m = JSON.parse(response.content);
         console.log(response.content);
-        return response.content;
+        return m.results[0].result.tag.classes;
   }
 });
 
 if (Meteor.isClient) {
   // counter starts at 0
-  Session.setDefault('counter', 0);
 
-  var result = Meteor.call("callClarifai");
+  Session.setDefault('counter', 0);
+  console.log("calling callClarifai");
+  Meteor.call("callClarifai", function(err, result) {
+    Session.setDefault('result', result);
     debugger;
-  console.log(result);
+    console.log(result);
+  });
 
   Template.hello.helpers({
-    counter: function () {
-      return Session.get('counter');
+    result: function () {
+      return Session.get('result');
     }
   });
 
@@ -34,7 +38,6 @@ if (Meteor.isClient) {
 if (Meteor.isServer) {
   Meteor.startup(function () {
     // code to run on server at startup
-    var response;
 
   });
 
